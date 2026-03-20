@@ -1,3 +1,6 @@
+<img width="1888" height="963" alt="image" src="https://github.com/user-attachments/assets/f57f2f95-cf4a-4bae-a61e-abd3b7740ea8" />
+
+
 # 🏠 Property Register (Soroban Smart Contract)
 
 ## 📌 Project Description
