@@ -10,9 +10,57 @@ import {
   checkConnection,
 } from "@/hooks/contract";
 
+const README_CONTENT = `# Property Registry Dapp
+
+## Overview
+A **permissionless property registry** on the Stellar blockchain — powered by Soroban smart contracts.
+
+## Features
+- Register properties on-chain
+- Lookup property details
+- Transfer property ownership
+- All transactions settle in ~5 seconds for under $0.01
+
+## Tech Stack
+- **Frontend**: Next.js 16, React 19, Tailwind CSS
+- **Wallet**: Freighter (Stellar)
+- **Backend**: Soroban Smart Contracts (Rust)
+- **Network**: Stellar Testnet
+
+## Getting Started
+
+\`\`\`bash
+# Install dependencies
+bun install
+
+# Run development server
+bun dev
+\`\`\`
+
+## Contract Address
+Deploy your compiled Soroban contract and update the address in:
+\`hooks/contract.ts\` → \`CONTRACT_ADDRESS\`
+
+## Project Structure
+\`\`\`
+client/          # Next.js frontend
+  app/           # App router pages
+  components/    # React components
+  hooks/         # Contract interaction hooks
+  lib/           # Utilities
+contract/        # Soroban Rust contracts
+\`\`\`
+
+## Learn More
+- [Soroban Docs](https://soroban.stellar.org)
+- [Stellar SDK](https://stellar.github.io/stellar-sdk)
+- [Freighter Wallet](https://freighter.app)
+`;
+
 export default function Home() {
   const [walletAddress, setWalletAddress] = useState<string | null>(null);
   const [isConnecting, setIsConnecting] = useState(false);
+  const [showReadme, setShowReadme] = useState(false);
 
   useEffect(() => {
     (async () => {
@@ -142,9 +190,56 @@ export default function Home() {
             <span>Freighter Wallet</span>
             <span className="h-2.5 w-px bg-white/10" />
             <span>Soroban Smart Contracts</span>
+            <span className="h-2.5 w-px bg-white/10" />
+            <button
+              onClick={() => setShowReadme(true)}
+              className="cursor-pointer hover:text-white/40 transition-colors duration-200"
+            >
+              📄 README
+            </button>
           </div>
         </div>
       </main>
+
+      {/* README Preview Modal */}
+      {showReadme && (
+        <div
+          className="fixed inset-0 z-50 flex items-center justify-center p-4 animate-fade-in"
+          onClick={() => setShowReadme(false)}
+        >
+          {/* Backdrop */}
+          <div className="absolute inset-0 bg-black/70 backdrop-blur-sm" />
+
+          {/* Modal */}
+          <div
+            className="relative w-full max-w-2xl max-h-[80vh] bg-[#0d0d1a] border border-white/10 rounded-2xl overflow-hidden shadow-2xl"
+            onClick={(e) => e.stopPropagation()}
+          >
+            {/* Header */}
+            <div className="flex items-center justify-between px-6 py-4 border-b border-white/10">
+              <div className="flex items-center gap-3">
+                <span className="text-2xl">📄</span>
+                <h2 className="text-lg font-semibold text-white">README.md</h2>
+              </div>
+              <button
+                onClick={() => setShowReadme(false)}
+                className="p-2 rounded-lg hover:bg-white/10 text-white/50 hover:text-white transition-colors"
+              >
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                  <path d="M18 6L6 18M6 6l12 12" />
+                </svg>
+              </button>
+            </div>
+
+            {/* Content */}
+            <div className="overflow-y-auto max-h-[calc(80vh-72px)] p-6">
+              <pre className="text-sm text-white/70 font-mono whitespace-pre-wrap leading-relaxed">
+                {README_CONTENT}
+              </pre>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
